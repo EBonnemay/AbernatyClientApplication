@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>abernaty-client</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0-2/css/bootstrap.min.css"/>
+</head>
+
+<body>
+<div class="container">
+    <h1>Application abernaty-client</h1>
+    <div class="row">
+
+        <div th:each="patient : ${patients}" class="col-md-4 my-1">
+
+           <p th:text= "${patient.family}"></p>
+           <p th:text= "${patient.given}"></p>
+           <p th:text= "${patient.sex}"></p>
+           <p th:text= "${patient.address}"></p>
+           <p th:text= "${patient.phone}"></p>
+
+
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript" src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+</body>
+</html>
