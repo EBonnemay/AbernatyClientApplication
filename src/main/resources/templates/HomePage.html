@@ -11,16 +11,18 @@
     <h1>Application abernaty-client</h1>
     <div class="row">
         <div class="col">
-            <h2>Add patient</h2>
+
             <table class="table table-striped">
                 <!-- pas d'entête thead -->
                 <thead>
                     <td><span th:text="'family'"></span></td>
                     <td><span th:text="'given'"></span></td>
-                    <td><span th:text="'date of birth'"></span></td>
+                    <td><span th:text="'date_of_birth'"></span></td>
                     <td><span th:text="'sex'"></span></td>
                     <td><span th:text="'address'"></span></td>
                     <td><span th:text="'phone'"></span></td>
+
+
 
                 </thead>
                 <tbody>
@@ -35,11 +37,17 @@
                     <td><span th:text="${patient.sex}"></span></td>
                     <td><span th:text="${patient.address}"></span></td>
                     <td><span th:text="${patient.phone}"></span></td>
+                    <td><span th:text="${patient.patient_id}"></span></td>
+
+                    <!--<td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>-->
+                    <td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>
+                    <!--<td><a th:href="@{/patient/delete(id=@{patient.patient_id})}" method = "get" class="btn btn-link">delete</a></td>-->
                     <!--<td><span><a th:href="@{/deleteFriend(email = ${user.email})}">Delete</a></span></td>-->
                     <!--<td><span><a th:href="@{/newTransaction(id = ${user.id})}">new Transaction</a></span></td>-->
                 </tr>
                 </tbody>
             </table>
+
         <!--<div th:each="patient : ${patients}" class="col-md-4 my-1">
 
            <p th:text= "${patient.family}"></p>
@@ -54,6 +62,9 @@
 
     </div>
 </div>
+    <div class="row">
+        <h2><a th:href="@{/addPatient}" method = "get" class="btn btn-link">Add new patient</a></h2>
+    </div>
 </container>
 </main>
 <footer></footer>
