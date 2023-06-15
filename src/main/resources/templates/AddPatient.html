@@ -21,44 +21,45 @@
 <main>
     <div class="container d-flex justify-content-center bg-light border border-dark py-4">
         <div>
+            <div class="row py-2 bg-success text-white d-flex justify-content-center ">Add new patient</div>
             <form th:action="@{/patient/add}"  method="post">
-                <div class="row py-2 bg-success text-white d-flex justify-content-center ">add new patient</div>
+
                 <div class="row py-4">
-                    <input type="text" id="family" name="family" autofocus="autofocus" placeholder="family" style="width: 200px; height: 40px; margin: 2px;"/> <br />
+                    <input type="text"  id="family" name="family" autofocus="autofocus" placeholder="family" style="width: 200px; height: 40px; margin: 2px;"/> <br />
                 </div>
                 <div class="row py-2">
-                    <input type="text" id="given" name="given"placeholder="given" style="width: 200px; height: 40px; margin: 2px;" /> <br />
+                    <input type="text"  id="given" name="given"placeholder="given" style="width: 200px; height: 40px; margin: 2px;" /> <br />
                 </div>
                 <div class="row py-2">
-                    <input type="date" id="date_of_birth" name="date_of_birth"placeholder="date_of_birth" style="width: 200px; height: 40px; margin: 2px;" /> <br />
+                    <!--format change selon type date ou String si text date ne s affiche plus-->
+                    <input type="date"  id="date_of_birth" name ="date_of_birth" placeholder="date of birth" style="width: 200px; height: 40px; margin: 2px;"/> <br/>
+                    <!--<input type="date" th:field="*{patient.date_of_birth}" id="date_of_birth" name="date_of_birth"placeholder="date of birth" style="width: 200px; height: 40px; margin: 2px;" /> <br />-->
+                </div>
+
+                <div class="row py-2">
+                    <input type="text"  id="sex" name="sex"placeholder="sex" style="width: 200px; height: 40px; margin: 2px;" /> <br />
                 </div>
                 <div class="row py-2">
-                    <input type="text" id="sex" name="sex"placeholder="sex" style="width: 200px; height: 40px; margin: 2px;" /> <br />
+                    <input type="text"  id="address" name="address"placeholder="address" style="width: 200px; height: 40px; margin: 2px;" /> <br />
                 </div>
                 <div class="row py-2">
-                    <input type="text" id="address" name="address"placeholder="address" style="width: 200px; height: 40px; margin: 2px;" /> <br />
+                    <input type="text"  id="phone" name="phone"placeholder="phone" style="width: 200px; height: 40px; margin: 2px;" /> <br />
                 </div>
+
 
                 <div th:if="${param.error}">
                     <p class="errors">Wrong user or password</p>
                 </div>
                 <div class="row pt-2">
-                    <input type="submit" value="Login" style="width: 200px; height: 40px; margin: 2px;" />
+                    <input type="submit" value="Submit" style="width: 200px; height: 40px; margin: 2px;" />
                 </div >
 
 
 
             </form>
-            <!--<form th:action="@{/registerPage}"  method="post">
-                <div class="row pt-2">
-                    <input type="button" value="not registered?" style="width: 200px; height: 40px; margin: 2px;" />
-                </div>
-            </form>-->
-            <!--<form th:action="@{/registerPage}" method="get">
 
-                <button class="btn btn-primary" type="submit">Go to registration page</button>
-            </form>-->
         </div>
+    </div>
 
     </div>
 

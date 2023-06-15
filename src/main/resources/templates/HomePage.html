@@ -41,9 +41,11 @@
 
                     <!--<td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>-->
                     <td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>
-                    <!--<td><a th:href="@{/patient/delete(id=@{patient.patient_id})}" method = "get" class="btn btn-link">delete</a></td>-->
                     <!--<td><span><a th:href="@{/deleteFriend(email = ${user.email})}">Delete</a></span></td>-->
-                    <!--<td><span><a th:href="@{/newTransaction(id = ${user.id})}">new Transaction</a></span></td>-->
+                    <td><form th:action="@{/patient/delete/{id}(id=${patient.patient_id})}" method="post" id="deleteForm">
+                        <input type="hidden" name="_method" />
+                        <button type="submit" class="btn btn-link" >Delete</button>
+                    </form></td>
                 </tr>
                 </tbody>
             </table>
@@ -63,7 +65,8 @@
     </div>
 </div>
     <div class="row">
-        <h2><a th:href="@{/addPatient}" method = "get" class="btn btn-link">Add new patient</a></h2>
+
+        <h2><a th:href="@{/patient/add}" method = "get" class="btn btn-link">Add new patient</a></h2>
     </div>
 </container>
 </main>
