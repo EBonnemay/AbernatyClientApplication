@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>abernaty-client</title>
+  <link rel="stylesheet" type="text/css" href="webjars/bootstrap/5.2.3/css/bootstrap.min.css"/>
+</head>
+
+<body>
+<main>
+  <container>
+    <h1>Application abernaty-client</h1>
+    <div class="row">
+      <div class="col">
+
+        <table class="table table-striped">
+          <!-- pas d'entête thead -->
+          <thead>
+          <td><span th:text="'date'"></span></td>
+          <td><span th:text="'notes'"></span></td>
+          </thead>
+          <tbody>
+          <!-- ne pas corriger les warnings IntelliJ sur les expressions spel -->
+          <tr th:if="${listOfNotes.empty}">
+            <td colspan="3">Aucune note sur ce patient</td>
+          </tr>
+          <tr th:each="note: ${listOfNotes}">
+            <td><span th:text="${note.date}"></span></td>
+            <td><span th:text="${note.contentNote}"></span></td>
+
+
+            <!--<td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>-->
+            <td><a th:href="@{/patient/update/{id}(id=${patient.patId})}" method = "get" class="btn btn-link">update</a></td>
+            <!--<td><span><a th:href="@{/deleteFriend(email = ${user.email})}">Delete</a></span></td>-->
+            <td><form th:action="@{/patient/delete/{id}(id=${patient.patient_id})}" method="get" id="deleteForm">
+              <input type="hidden" name="_method" />
+              <button type="submit" class="btn btn-link" >Delete</button>
+            </form></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <!--<div th:each="patient : ${patients}" class="col-md-4 my-1">
+
+           <p th:text= "${patient.family}"></p>
+           <p th:text= "${patient.given}"></p>
+           <p th: text="${patient.date_of_birth}"></p>
+           <p th:text= "${patient.sex}"></p>
+           <p th:text= "${patient.address}"></p>
+           <p th:text= "${patient.phone}"></p>
+
+
+        </div>-->
+
+      </div>
+    </div>
+    <div class="row">
+
+      <h2><a th:href="@{/note/add}" method = "get" class="btn btn-link">Add new patient</a></h2>
+    </div>
+  </container>
+</main>
+<footer></footer>
+<script type="text/javascript" src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+
+</body>
+</html>

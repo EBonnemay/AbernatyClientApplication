@@ -1,7 +1,9 @@
 package com.mediscreen.abernatyclient.controller;
 
+import com.mediscreen.abernatyclient.beans.NoteBean;
 import com.mediscreen.abernatyclient.beans.PatientBean;
 import com.mediscreen.abernatyclient.proxies.MicroservicePatientsProxy;
+import com.mediscreen.abernatyclient.proxies.MicroservicePractitionersProxy;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,17 +17,19 @@ import java.util.List;
 @Controller
 public class ClientController {
     private final MicroservicePatientsProxy patientsProxy;
-    public ClientController(MicroservicePatientsProxy patientsProxy){
-    this.patientsProxy = patientsProxy;
+    private final MicroservicePractitionersProxy practitionersProxy;
+    public ClientController(MicroservicePatientsProxy patientsProxy, MicroservicePractitionersProxy practitionersProxy){
+        this.patientsProxy = patientsProxy;
+        this.practitionersProxy = practitionersProxy;
     }
+    /**display list of patients on HomePage page*/
     @RequestMapping("/")
     public String displayHomePage(Model model){
-
         List<PatientBean> patients = patientsProxy.listOfPatients();
-
         model.addAttribute("patients", patients);
         return "HomePage";
     }
+    /**display 'update' form on UpdatePatient page*/
     @GetMapping("/patient/update/{id}")
     public String displayUpdateForm(@PathVariable("id")String id, Model model){
         System.out.println("id is" + id);
@@ -37,10 +41,14 @@ public class ClientController {
         model.addAttribute("patient", patient);
         return "UpdatePatient";
     }
+    /**display the 'add patient' form on AddPatient page*/
     @GetMapping("/patient/add")
     public String displayAddForm(){
         return "AddPatient";
     }
+
+
+
 
    /* @PostMapping("/patient/update/{id}")
     public String updatePatient(@PathVariable("id") String id, @RequestParam(name = "family", required = true) String family, @RequestParam(name = "given", required = true) String given, @RequestParam(name = "date_of_birth", required = false) Date dateOfBirth, @RequestParam(name = "sex", required = false) String sex, @RequestParam(name = "address", required = false) String address, @RequestParam(name = "phone", required = false) String phone, Model model){
@@ -61,7 +69,8 @@ public class ClientController {
     }*/
 
 //@ModelAttribute : collects elements in form and binds them to the attributes of the model object based on their names.
-    @PostMapping("/patient/update/{id}")
+    /**update a patient and return HomePage*/
+   /* @PostMapping("/patient/update/{id}")
     public String updatePatient(@PathVariable("id") String id, @Valid @ModelAttribute ("patient") PatientBean patient, BindingResult bindingResult){
         System.out.println("this is family "+ patient.getFamily());
         //System.out.println("this is date :"+ dateOfBirth);
@@ -73,9 +82,9 @@ public class ClientController {
         System.out.println("in client controller post : date of birth = "+ patient.getDate_of_birth());
         System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
         return "redirect:/" ;
-    }
-
-    @PostMapping("/patient/add")
+    }*/
+    /**add a patient and return HomePage*/
+    /*@PostMapping("/patient/add")
     public String addPatient(@Valid @ModelAttribute ("patient")PatientBean patient, BindingResult bindingResult){
         System.out.println("this is family "+ patient.getFamily());
         //System.out.println("this is date :"+ dateOfBirth);
@@ -89,13 +98,62 @@ public class ClientController {
         System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
 
         return "redirect:/";
-    }
-    @PostMapping("/patient/delete/{id}")
+    }*/
+    /**delete a patient and return HomePage*/
+   /* @GetMapping("/patient/delete/{id}")
     public String deletePatient(@PathVariable ("id")String id){
         System.out.println("patient to delete's id is "+ id);
         patientsProxy.deletePatient(id);
         return "redirect:/";
+    }*/
+
+
+
+    /**display the list of notes on one patient on NotesPage page__*/
+   @GetMapping("/notes/{id}")
+    public String displayNotesPage(@PathVariable("id")String id, Model model){
+        //PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(id));
+        List<NoteBean> listOfNotes = practitionersProxy.displayNotesPage(id);
+        model.addAttribute("listOfNotes", listOfNotes);
+        return "NotesPage";
+
     }
 
+    /**display 'add note' form on AddNote page_calling patientsProxy, not practitioners' proxy__*/
+   /* @GetMapping("/note/add/{id}")
+   public String displayAddNoteForm(@PathVariable("id")String id, Model model){
+        PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(id));
+        model.addAttribute("patient", patient);
+        return "AddNote";
+
+    }*/
+
+    /**display 'update note' form on UpdateNote page__ calling patient and pratitioners' proxy__*/
+   /* @GetMapping("/note/update/{id}")
+    public String displayUpdateNoteForm(@PathVariable("patId")String patId, @PathVariable("noteId")String noteId, Model model){
+        PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(patId));
+        NoteBean note = practitionersProxy.getNoteByIds(patId,noteId );
+        model.addAttribute("note", note);
+        return "AddNote";
+
+    }*/
+    /**add a note and return notesPage__*/
+    /*@PostMapping("note/add/{id}")
+    public String addNote(@PathVariable("id")String id, @Valid @ModelAttribute ("noteContent")String noteContent){
+        practitionersProxy.addNote(id, noteContent);
+        return "redirect:/NotesPage";
+    }*/
+    /**delete a note and return notesPage__*/
+   /* @GetMapping("note/delete/{id}")
+    public String deleteNote(@PathVariable("id")String id){
+        practitionersProxy.deleteNote(id);
+        return "redirect:/NotesPage";
+    }*/
+    /**update a note and return notesPage__*/
+    /*@PostMapping("note/update/{id}")
+    public String updateNote(@PathVariable("id")String id, @Valid @ModelAttribute ("note")NoteBean note){
+        practitionersProxy.updateNote(id,note );
+        return "redirect:/NotesPage";
+    }*/
 
 }

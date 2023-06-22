@@ -31,6 +31,6 @@ public interface MicroservicePatientsProxy {
 
     @PostMapping(value = "/patient/add")
     public String addPatient( PatientBean patient);
-    @PostMapping(value = "/patient/delete/{id}")
+    @GetMapping(value = "/patient/delete/{id}")
     public String deletePatient(@PathVariable("id")String id);
 }

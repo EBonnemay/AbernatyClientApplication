@@ -21,6 +21,7 @@
                     <td><span th:text="'sex'"></span></td>
                     <td><span th:text="'address'"></span></td>
                     <td><span th:text="'phone'"></span></td>
+                    <td><span th:text="'notes'"></span></td>
 
 
 
@@ -38,11 +39,12 @@
                     <td><span th:text="${patient.address}"></span></td>
                     <td><span th:text="${patient.phone}"></span></td>
                     <td><span th:text="${patient.patient_id}"></span></td>
+                    <td><span th:text="${patient.patient_id}"></span></td>
 
                     <!--<td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>-->
                     <td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>
                     <!--<td><span><a th:href="@{/deleteFriend(email = ${user.email})}">Delete</a></span></td>-->
-                    <td><form th:action="@{/patient/delete/{id}(id=${patient.patient_id})}" method="post" id="deleteForm">
+                    <td><form th:action="@{/patient/delete/{id}(id=${patient.patient_id})}" method="get" id="deleteForm">
                         <input type="hidden" name="_method" />
                         <button type="submit" class="btn btn-link" >Delete</button>
                     </form></td>
