@@ -38,15 +38,15 @@
                     <td><span th:text="${patient.sex}"></span></td>
                     <td><span th:text="${patient.address}"></span></td>
                     <td><span th:text="${patient.phone}"></span></td>
-                    <td><span th:text="${patient.patient_id}"></span></td>
-                    <td><span th:text="${patient.patient_id}"></span></td>
+
 
                     <!--<td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>-->
+                    <td><a th:href="@{/note/{patId}(patId=${patient.patient_id})}" method = "get" class="btn btn-link">patient's file</a></td>
                     <td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>
                     <!--<td><span><a th:href="@{/deleteFriend(email = ${user.email})}">Delete</a></span></td>-->
                     <td><form th:action="@{/patient/delete/{id}(id=${patient.patient_id})}" method="get" id="deleteForm">
                         <input type="hidden" name="_method" />
-                        <button type="submit" class="btn btn-link" >Delete</button>
+                        <button type="submit" class="btn btn-success" >Delete</button>
                     </form></td>
                 </tr>
                 </tbody>

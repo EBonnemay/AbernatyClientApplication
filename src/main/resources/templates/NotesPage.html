@@ -10,10 +10,15 @@
   <container>
     <h1>Application abernaty-client</h1>
     <div class="row">
+      <span th:text = "${patient.given}"></span>
+      <span th:text = "${patient.family}"></span>
+
+    </div>
+    <div class="row">
       <div class="col">
 
         <table class="table table-striped">
-          <!-- pas d'entête thead -->
+
           <thead>
           <td><span th:text="'date'"></span></td>
           <td><span th:text="'notes'"></span></td>
@@ -26,12 +31,13 @@
           <tr th:each="note: ${listOfNotes}">
             <td><span th:text="${note.date}"></span></td>
             <td><span th:text="${note.contentNote}"></span></td>
+            <td><span th:text="${note.id}"></span></td>
 
 
             <!--<td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>-->
-            <td><a th:href="@{/patient/update/{id}(id=${patient.patId})}" method = "get" class="btn btn-link">update</a></td>
+            <td><a th:href="@{/note/update/{id}(id=${note.id})}" method = "get" class="btn btn-link">update</a></td>
             <!--<td><span><a th:href="@{/deleteFriend(email = ${user.email})}">Delete</a></span></td>-->
-            <td><form th:action="@{/patient/delete/{id}(id=${patient.patient_id})}" method="get" id="deleteForm">
+            <td><form th:action="@{/note/delete/{id}(id=${note.id})}" method="get" id="deleteForm">
               <input type="hidden" name="_method" />
               <button type="submit" class="btn btn-link" >Delete</button>
             </form></td>
@@ -55,7 +61,7 @@
     </div>
     <div class="row">
 
-      <h2><a th:href="@{/note/add}" method = "get" class="btn btn-link">Add new patient</a></h2>
+      <h2><a th:href="@{/note/add/{patId}(patId=${patient.patient_id})}" method = "get" class="btn btn-link">Add new note</a></h2>
     </div>
   </container>
 </main>

@@ -23,7 +23,6 @@
     <div>
       <div class="row py-2 bg-success text-white d-flex justify-content-center ">Update patient</div>
       <form th:action="@{/patient/update/{id}(id=${patient.patient_id})}"  method="post">
-
         <div class="row py-4">
           <input type="text" th:field="*{patient.family}" id="family" name="family" autofocus="autofocus" placeholder="family" style="width: 200px; height: 40px; margin: 2px;"/> <br />
         </div>
@@ -32,7 +31,7 @@
         </div>
         <div class="row py-2">
           <!--format change selon type date ou String si text date ne s affiche plus-->
-          <input type="date" th:field="*{patient.date_of_birth}" id="date_of_birth" name ="date_of_birth" placeholder="date of birth" style="width: 200px; height: 40px; margin: 2px;"/> <br/>
+          <input type="date" th:field="*{patient.date_of_birth}" id="date_of_birth" name ="date_of_birth" placeholder="date of birth" style="width: 200px; height: 40px; margin: 2px;"/>
           <!--<input type="date" th:field="*{patient.date_of_birth}" id="date_of_birth" name="date_of_birth"placeholder="date of birth" style="width: 200px; height: 40px; margin: 2px;" /> <br />-->
         </div>
 

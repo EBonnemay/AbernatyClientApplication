@@ -19,19 +19,19 @@ public interface MicroservicePractitionersProxy {
 
     /**get list of notes on one patient__*/
     @GetMapping(value = "/note/patient/{patId}")
-    public List displayNotesPage(@PathVariable String patId);
+    public List displayOnePatientsNotesPage(@PathVariable String patId);
 
-   /**get a note by id*/
-   @GetMapping(value = "/note/{patId}/{noteId}")
-   public NoteBean getNoteByIds(@PathVariable("patId")String patId,@PathVariable("noteId") String noteId);
+   /**get a note by its id*/
+   @GetMapping(value = "/note/{id}")
+   public NoteBean findNoteById(@PathVariable("id") String id);
 
     /**add a note by patient id__*/
     @PostMapping(value = "/note/add/{patId}")
     public void addNote(@PathVariable("patId")String patId, @RequestBody String contentNote);
 
     /**delete a note__*/
-    @GetMapping(value = "/note/delete/{id}")
-    public void deleteNote(@PathVariable("id")String id);
+    @GetMapping(value = "/note/delete/{noteId}")
+    public void deleteNote(@PathVariable("noteId")String id);
 
     /**update a note__*/
     @PostMapping(value = "/note/update/{id}")
