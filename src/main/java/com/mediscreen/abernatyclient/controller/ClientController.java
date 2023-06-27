@@ -4,6 +4,7 @@ import com.mediscreen.abernatyclient.beans.NoteBean;
 import com.mediscreen.abernatyclient.beans.PatientBean;
 import com.mediscreen.abernatyclient.proxies.MicroservicePatientsProxy;
 import com.mediscreen.abernatyclient.proxies.MicroservicePractitionersProxy;
+import com.mediscreen.abernatyclient.proxies.MicroserviceRiskProxy;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,15 +13,18 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ClientController {
     private final MicroservicePatientsProxy patientsProxy;
     private final MicroservicePractitionersProxy practitionersProxy;
-    public ClientController(MicroservicePatientsProxy patientsProxy, MicroservicePractitionersProxy practitionersProxy){
+    private final MicroserviceRiskProxy riskProxy;
+    public ClientController(MicroservicePatientsProxy patientsProxy, MicroservicePractitionersProxy practitionersProxy, MicroserviceRiskProxy riskProxy){
         this.patientsProxy = patientsProxy;
         this.practitionersProxy = practitionersProxy;
+        this.riskProxy = riskProxy;
     }
     /**display list of patients on HomePage page*/
     @RequestMapping("/")
@@ -68,8 +72,7 @@ public class ClientController {
     @PostMapping("/patient/add")
     public String addPatient(@Valid @ModelAttribute ("patient")PatientBean patient, BindingResult bindingResult){
         System.out.println("this is family "+ patient.getFamily());
-        //System.out.println("this is date :"+ dateOfBirth);
-        //j'ai une family et une date  format 1999-12-19
+
         if(bindingResult.hasErrors()){
             return "error-page";
         }
@@ -89,13 +92,21 @@ public class ClientController {
     }
 
     /**display the list of notes on one patient on NotesPage page__*/
-   @GetMapping("/note/{patId}")
+   @GetMapping("/note/all/{patId}")
     public String displayNotesPage(@PathVariable("patId")String patId, Model model){
         //PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(id));
         List<NoteBean> listOfNotes = practitionersProxy.displayOnePatientsNotesPage(patId);
+
         PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(patId));
+        List<String>listOfOnePatientNotesMessages = new ArrayList<>();
+        for (NoteBean note : listOfNotes){
+            listOfOnePatientNotesMessages.add(note.getContentNote());
+        }
+        String risk = riskProxy.calculateRisk(patient.getSex(), patient.getDate_of_birth(), listOfOnePatientNotesMessages);
         model.addAttribute("listOfNotes", listOfNotes);
         model.addAttribute("patient", patient);
+        model.addAttribute("risk", risk);
+
         return "NotesPage";
 
     }
@@ -118,29 +129,50 @@ public class ClientController {
         System.out.println("patId in client controller is "+ patId);
         int intPatId = Integer.parseInt(patId);
         PatientBean patient = patientsProxy.retrievePatient(intPatId);
-        System.out.println(intPatId);
         model.addAttribute("note", note);
         model.addAttribute("patient", patient);
         return "UpdateNote";
     }
 
     /**add a note and return notesPage with patient's id as param__*/
-    @PostMapping("note/add/{patId}")
-    public String addNote(@PathVariable("patId")String patId, @Valid @ModelAttribute ("noteContent")String noteContent){
+    @PostMapping("/note/add/{patId}")
+    public String addNote(@PathVariable("patId")String patId, @RequestParam ("noteContent")String noteContent){
+        System.out.println("method post add " + noteContent);//ok
+        System.out.println("inside client controller - post add note");//ok
         practitionersProxy.addNote(patId, noteContent);
-        return "redirect:/NotesPage";
+        return String.format("redirect:/note/all/%s",patId);
     }
     /**delete a note and return notesPage__*/
-   @GetMapping("note/delete/{id}")
+   @GetMapping("/note/delete/{id}")
     public String deleteNote(@PathVariable("id")String id){
-        practitionersProxy.deleteNote(id);
-        return "redirect:/NotesPage";
+       NoteBean note = practitionersProxy.findNoteById(id);
+       String patId = note.getPatId();
+       practitionersProxy.deleteNote(id);
+
+
+       System.out.println("voilà patId "+ patId);
+        return String.format("redirect:/note/all/%s",patId);
     }
     /**update a note and return notesPage__*/
-    @PostMapping("note/update/{id}")
-    public String updateNote(@PathVariable("id")String id, @Valid @ModelAttribute ("note")NoteBean note){
-        practitionersProxy.updateNote(id,note );
-        return "redirect:/NotesPage";
+    @PostMapping("/note/update/{id}")
+    public String updateNote(@PathVariable("id")String id, @RequestParam("noteContent") String noteContent){
+        System.out.println("mathod post update "+noteContent);
+
+        practitionersProxy.updateNote(id,noteContent);
+        NoteBean note = practitionersProxy.findNoteById(id);
+        String patId = note.getPatId();
+        System.out.println(String.format("redirect:/note/%s",patId));
+        return String.format("redirect:/note/all/%s",patId);
     }
+    /**get risk level*/
+    /*@PostMapping("/risk/calculate/{patId}")
+    public String calculateRisk(@PathVariable("patId")String patId, @RequestBody PatientBean patient, Model model){
+        int age = riskProxy.getAge(patient.getDate_of_birth());
+        String sex = patient.getSex();
+        List<String>riskFactors = riskProxy.getListOfRiskFactors(String patId);
+        RiskBean risk = riskProxy.calculateRisk(age, sex, riskFactors);
+        model.addAttribute("risk", risk);
+        return String.format("redirect:/note/all/%", patId);
+    }*/
 
 }

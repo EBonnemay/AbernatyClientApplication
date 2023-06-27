@@ -41,7 +41,7 @@
 
 
                     <!--<td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>-->
-                    <td><a th:href="@{/note/{patId}(patId=${patient.patient_id})}" method = "get" class="btn btn-link">patient's file</a></td>
+                    <td><a th:href="@{/note/all/{patId}(patId=${patient.patient_id})}" method = "get" class="btn btn-link">patient's file</a></td>
                     <td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>
                     <!--<td><span><a th:href="@{/deleteFriend(email = ${user.email})}">Delete</a></span></td>-->
                     <td><form th:action="@{/patient/delete/{id}(id=${patient.patient_id})}" method="get" id="deleteForm">

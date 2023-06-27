@@ -1,12 +1,10 @@
 package com.mediscreen.abernatyclient.proxies;
 
 import com.mediscreen.abernatyclient.beans.NoteBean;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ public interface MicroservicePractitionersProxy {
     List<NoteBean> listOfNotes();
 
     /**get list of notes on one patient__*/
-    @GetMapping(value = "/note/patient/{patId}")
+    @GetMapping(value = "/note/all/{patId}")
     public List displayOnePatientsNotesPage(@PathVariable String patId);
 
    /**get a note by its id*/
@@ -27,7 +25,7 @@ public interface MicroservicePractitionersProxy {
 
     /**add a note by patient id__*/
     @PostMapping(value = "/note/add/{patId}")
-    public void addNote(@PathVariable("patId")String patId, @RequestBody String contentNote);
+    public void addNote(@PathVariable("patId")String patId, @RequestParam("contentNote") String contentNote);
 
     /**delete a note__*/
     @GetMapping(value = "/note/delete/{noteId}")
@@ -35,6 +33,6 @@ public interface MicroservicePractitionersProxy {
 
     /**update a note__*/
     @PostMapping(value = "/note/update/{id}")
-    public void updateNote(@PathVariable("id")String id, @RequestBody NoteBean noteBean);
+    public void updateNote(@PathVariable("id")String id, @RequestParam ("noteContent")String noteContent);
 
 }

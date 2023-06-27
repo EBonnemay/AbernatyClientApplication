@@ -22,11 +22,10 @@
   <div class="container d-flex justify-content-center bg-light border border-dark py-4">
     <div>
       <div class="row py-2 bg-success text-white d-flex justify-content-center ">Add new note</div>
-      <div class="row py-2 bg-success text-white d-flex justify-content-center ">${patient.family}</div>
-      <div class="row py-2 bg-success text-white d-flex justify-content-center ">${patient.given}</div>
+      <div class="row py-2 bg-success text-white d-flex justify-content-center "><span th:text="${patient.family}"></span><span th:text="${patient.given}"></span></div>
       <form th:action="@{/note/add/{patId}(patId=${patient.patient_id})}"  method="post">
         <br>
-        <textarea rows = "5" cols = "60" name = "description">
+        <textarea rows = "5" cols = "60" name = "noteContent">
             Enter details here...
          </textarea><br>
 

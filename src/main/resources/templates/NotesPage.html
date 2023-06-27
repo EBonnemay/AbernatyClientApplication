@@ -12,9 +12,9 @@
     <div class="row">
       <span th:text = "${patient.given}"></span>
       <span th:text = "${patient.family}"></span>
+      <span th:text = "${risk.level}"></span>
 
-    </div>
-    <div class="row">
+
       <div class="col">
 
         <table class="table table-striped">
@@ -37,7 +37,7 @@
             <!--<td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>-->
             <td><a th:href="@{/note/update/{id}(id=${note.id})}" method = "get" class="btn btn-link">update</a></td>
             <!--<td><span><a th:href="@{/deleteFriend(email = ${user.email})}">Delete</a></span></td>-->
-            <td><form th:action="@{/note/delete/{id}(id=${note.id})}" method="get" id="deleteForm">
+            <td><form th:action="@{/note/delete/{id}(id=${note.id})}" method="get" >
               <input type="hidden" name="_method" />
               <button type="submit" class="btn btn-link" >Delete</button>
             </form></td>
