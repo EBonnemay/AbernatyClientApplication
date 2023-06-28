@@ -12,7 +12,7 @@
     <div class="row">
       <span th:text = "${patient.given}"></span>
       <span th:text = "${patient.family}"></span>
-      <span th:text = "${risk.level}"></span>
+      <span th:text = "${risk}"></span>
 
 
       <div class="col">
@@ -22,6 +22,7 @@
           <thead>
           <td><span th:text="'date'"></span></td>
           <td><span th:text="'notes'"></span></td>
+
           </thead>
           <tbody>
           <!-- ne pas corriger les warnings IntelliJ sur les expressions spel -->

@@ -12,8 +12,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -41,7 +45,7 @@ public class ClientController {
         //model.addAttribute("family", patient.getFamily());
         //model.addAttribute("given", patient.getGiven());
         System.out.println(patient.getDate_of_birth());
-        System.out.println(patient.getDate_of_birth() instanceof Date);
+        //System.out.println(patient.getDate_of_birth() instanceof Date);
         model.addAttribute("patient", patient);
         return "UpdatePatient";
     }
@@ -65,7 +69,7 @@ public class ClientController {
         }
         patientsProxy.updatePatient(id, patient);
         System.out.println("in client controller post : date of birth = "+ patient.getDate_of_birth());
-        System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
+        //System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
         return "redirect:/" ;
     }
     /**add a patient and return HomePage*/
@@ -79,7 +83,7 @@ public class ClientController {
         patientsProxy.addPatient(patient);
 
         System.out.println("in client controller post : date of birth = "+ patient.getDate_of_birth());
-        System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
+       // System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
 
         return "redirect:/";
     }
@@ -102,13 +106,18 @@ public class ClientController {
         for (NoteBean note : listOfNotes){
             listOfOnePatientNotesMessages.add(note.getContentNote());
         }
-        String risk = riskProxy.calculateRisk(patient.getSex(), patient.getDate_of_birth(), listOfOnePatientNotesMessages);
+        LocalDate dateOfBirth = patient.getDate_of_birth();
+        System.out.println(dateOfBirth);
+       // Instant instant = dateOfBirth.toInstant();
+       // LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dateString = dateOfBirth.format(formatter);
+        String risk = riskProxy.calculateRiskFactors(patient.getSex(), dateString, listOfOnePatientNotesMessages);
         model.addAttribute("listOfNotes", listOfNotes);
         model.addAttribute("patient", patient);
         model.addAttribute("risk", risk);
-
         return "NotesPage";
-
     }
 
     /**display 'add note' form on AddNote page_calling patientsProxy, not practitioners' proxy__*/

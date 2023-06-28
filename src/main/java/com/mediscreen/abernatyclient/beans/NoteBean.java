@@ -7,13 +7,13 @@ import java.util.Date;
 
 public class NoteBean {
     private String id;
-    private Date date;
+    private LocalDate date;
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -26,8 +26,8 @@ public class NoteBean {
         this.contentNote = contentNote;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
         LocalDate localDate = LocalDate.now();
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
+        //ZoneId defaultZoneId = ZoneId.systemDefault();
+        //localdate = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
 
     }
 
