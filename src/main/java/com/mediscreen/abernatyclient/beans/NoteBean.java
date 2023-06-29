@@ -24,8 +24,7 @@ public class NoteBean {
     public NoteBean(String patId, String contentNote) {
         this.patId = patId;
         this.contentNote = contentNote;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
-        LocalDate localDate = LocalDate.now();
+        this.date = LocalDate.now();
         //ZoneId defaultZoneId = ZoneId.systemDefault();
         //localdate = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
 

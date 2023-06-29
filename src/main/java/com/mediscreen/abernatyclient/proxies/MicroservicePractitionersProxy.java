@@ -33,6 +33,6 @@ public interface MicroservicePractitionersProxy {
 
     /**update a note__*/
     @PostMapping(value = "/note/update/{id}")
-    public void updateNote(@PathVariable("id")String id, @RequestParam ("noteContent")String noteContent);
+    public void updateNote(@PathVariable("id")String id, @RequestParam ("contentNote")String contentNote);
 
 }

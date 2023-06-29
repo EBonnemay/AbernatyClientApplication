@@ -103,20 +103,27 @@ public class ClientController {
 
         PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(patId));
         List<String>listOfOnePatientNotesMessages = new ArrayList<>();
-        for (NoteBean note : listOfNotes){
+
+        for (NoteBean note : listOfNotes) {
             listOfOnePatientNotesMessages.add(note.getContentNote());
         }
-        LocalDate dateOfBirth = patient.getDate_of_birth();
-        System.out.println(dateOfBirth);
-       // Instant instant = dateOfBirth.toInstant();
-       // LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dateString = dateOfBirth.format(formatter);
-        String risk = riskProxy.calculateRiskFactors(patient.getSex(), dateString, listOfOnePatientNotesMessages);
+        LocalDate dateOfBirth = patient.getDate_of_birth();
+        System.out.println("date of birth in patient controller is "+ dateOfBirth);
+        // Instant instant = dateOfBirth.toInstant();
+        // LocalDate localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        //String dateString = dateOfBirth.format(formatter);
+       //String risk = riskProxy.calculateRiskFactors(new RiskFactor(patient.getSex(), dateOfBirth, listOfOnePatientNotesMessages));
+        String risk = riskProxy.calculateRiskFactors(patient.getSex(), dateOfBirth, listOfOnePatientNotesMessages);
         model.addAttribute("listOfNotes", listOfNotes);
         model.addAttribute("patient", patient);
         model.addAttribute("risk", risk);
+
+
+
+
         return "NotesPage";
     }
 
@@ -145,10 +152,10 @@ public class ClientController {
 
     /**add a note and return notesPage with patient's id as param__*/
     @PostMapping("/note/add/{patId}")
-    public String addNote(@PathVariable("patId")String patId, @RequestParam ("noteContent")String noteContent){
-        System.out.println("method post add " + noteContent);//ok
+    public String addNote(@PathVariable("patId")String patId, @RequestParam String contentNote){
+        System.out.println("method post add " + contentNote);//ok
         System.out.println("inside client controller - post add note");//ok
-        practitionersProxy.addNote(patId, noteContent);
+        practitionersProxy.addNote(patId, contentNote);
         return String.format("redirect:/note/all/%s",patId);
     }
     /**delete a note and return notesPage__*/
