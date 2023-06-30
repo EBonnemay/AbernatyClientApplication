@@ -2,6 +2,7 @@ package com.mediscreen.abernatyclient.controller;
 
 import com.mediscreen.abernatyclient.beans.NoteBean;
 import com.mediscreen.abernatyclient.beans.PatientBean;
+import com.mediscreen.abernatyclient.beans.RiskFactorDtoBean;
 import com.mediscreen.abernatyclient.proxies.MicroservicePatientsProxy;
 import com.mediscreen.abernatyclient.proxies.MicroservicePractitionersProxy;
 import com.mediscreen.abernatyclient.proxies.MicroserviceRiskProxy;
@@ -12,12 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -99,13 +96,13 @@ public class ClientController {
    @GetMapping("/note/all/{patId}")
     public String displayNotesPage(@PathVariable("patId")String patId, Model model){
         //PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(id));
-        List<NoteBean> listOfNotes = practitionersProxy.displayOnePatientsNotesPage(patId);
+        List<NoteBean> listOfOnePatientsNotes = practitionersProxy.retrieveOnePatientsNotes(patId);
 
         PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(patId));
-        List<String>listOfOnePatientNotesMessages = new ArrayList<>();
+        List<String>listOfOnePatientMessages = new ArrayList<>();
 
-        for (NoteBean note : listOfNotes) {
-            listOfOnePatientNotesMessages.add(note.getContentNote());
+        for (NoteBean note : listOfOnePatientsNotes) {
+            listOfOnePatientMessages.add(note.getContentNote());
         }
 
         LocalDate dateOfBirth = patient.getDate_of_birth();
@@ -115,9 +112,9 @@ public class ClientController {
 
         //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         //String dateString = dateOfBirth.format(formatter);
-       //String risk = riskProxy.calculateRiskFactors(new RiskFactor(patient.getSex(), dateOfBirth, listOfOnePatientNotesMessages));
-        String risk = riskProxy.calculateRiskFactors(patient.getSex(), dateOfBirth, listOfOnePatientNotesMessages);
-        model.addAttribute("listOfNotes", listOfNotes);
+       RiskFactorDtoBean riskFactorDtoBean = new RiskFactorDtoBean(patient.getSex(), patient.getDate_of_birth(), listOfOnePatientMessages);
+       String risk = riskProxy.calculateRiskFactors(riskFactorDtoBean);
+       model.addAttribute("listOfNotes", listOfOnePatientsNotes);
         model.addAttribute("patient", patient);
         model.addAttribute("risk", risk);
 

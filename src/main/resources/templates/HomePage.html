@@ -11,7 +11,11 @@
     main {
     margin-left: 10%;
     margin-right: 10%;
-    }</style>
+    margin-top:5%;
+    }
+
+</style>
+
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/5.2.3/css/bootstrap.min.css"/>
 
 </head>
@@ -19,8 +23,8 @@
 <body>
 <main>
 <container>
-    <h1>Application abernaty-client</h1>
-    <div class="row">
+    <h1>Patients</h1>
+    <div class="row" style = "margin-top : 20px">
         <div class="col">
 
             <table class="table table-striped">
@@ -28,7 +32,7 @@
                 <thead>
                     <td th:text="'family'"></td>
                     <td th:text="'given'"></td>
-                    <td th:text="'date_of_birth'"></td>
+                    <td type="date" th:text="'date_of_birth'" ></td>
                     <td th:text="'sex'"></td>
                     <td th:text="'address'"></td>
                     <td th:text="'phone'"></td>
@@ -52,12 +56,12 @@
 
 
                     <!--<td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-link">update</a></td>-->
-                    <td><a th:href="@{/note/all/{patId}(patId=${patient.patient_id})}" method = "get" class="btn btn-light">patient's file</a></td>
-                    <td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-secondary">update</a></td>
+                    <td><a th:href="@{/note/all/{patId}(patId=${patient.patient_id})}" method = "get" class="btn btn-outline-info">patient's file</a></td>
+                    <td><a th:href="@{/patient/update/{id}(id=${patient.patient_id})}" method = "get" class="btn btn-outline-secondary">update</a></td>
                     <!--<td><span><a th:href="@{/deleteFriend(email = ${user.email})}">Delete</a></span></td>-->
                     <td><form th:action="@{/patient/delete/{id}(id=${patient.patient_id})}" method="get" id="deleteForm">
                         <input type="hidden" name="_method" />
-                        <button type="submit" class="btn btn-dark" >Delete</button>
+                        <button type="submit" class="btn btn-outline-dark" >Delete</button>
                     </form></td>
                 </tr>
                 </tbody>
@@ -79,7 +83,7 @@
 </div>
     <div class="row">
 
-        <h2><a th:href="@{/patient/add}" method = "get" class="btn btn-info">Add new patient</a></h2>
+        <h2><a th:href="@{/patient/add}" method = "get" class="btn btn-secondary">Add new patient</a></h2>
     </div>
 </container>
 </main>

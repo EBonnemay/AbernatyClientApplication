@@ -17,7 +17,7 @@ public interface MicroservicePractitionersProxy {
 
     /**get list of notes on one patient__*/
     @GetMapping(value = "/note/all/{patId}")
-    public List<NoteBean> displayOnePatientsNotesPage(@PathVariable String patId);
+    public List<NoteBean> retrieveOnePatientsNotes(@PathVariable String patId);
 
    /**get a note by its id*/
    @GetMapping(value = "/note/{id}")

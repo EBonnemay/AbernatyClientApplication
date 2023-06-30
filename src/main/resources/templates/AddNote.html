@@ -20,8 +20,10 @@
     width: 78%;
     margin: 30px auto;
     padding: 10px;
-    background-color : powderblue;
+    background-color : #919090;
     text-align : center;
+    border: 1px solid black;
+    color:white;
     }
    .report-div{
     width: 80%;
@@ -47,17 +49,13 @@
 
 
       <div class="title-div">
-
-        <h2 th:text="${patient.family}+' '+${patient.given}"></h2>
-        <br>
-        <h3>Add new note</h3>
+          <span> Add new note for patient <span th:text="${patient.family}+' '+${patient.given}"></span> </span>
       </div>
 
 
       <div class="report-div">
         <form th:action="@{/note/add/{patId}(patId=${patient.patient_id})}"  method="post">
-            <textarea class= centered-textarea name = "contentNote">  new report ...
-            </textarea>
+            <textarea class= centered-textarea name = "contentNote">new report ...</textarea>
             <div th:if="${param.error}">
                 <p class="errors">Wrong data</p>
             </div>
