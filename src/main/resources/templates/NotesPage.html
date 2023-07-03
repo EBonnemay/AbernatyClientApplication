@@ -58,7 +58,7 @@
     <div th:if="${not #lists.isEmpty(listOfNotes) && risk == 'Borderline'}" class = "alert alert-warning" role="alert" style="display: inline-block">
       <span> level of risk for this patient :  <span  th:text = "${risk}"></span></span>
     </div>
-    <div th:if="${not #lists.isEmpty(listOfNotes) && risk == 'In Danger'}" class = "alert alert-danger" role="alert" style="display: inline-block">
+    <div th:if="${not #lists.isEmpty(listOfNotes) && risk == 'In danger'}" class = "alert alert-danger" role="alert" style="display: inline-block">
       <span> level of risk for this patient :  <span th:text = "${risk}"></span></span>
     </div>
     <div th:if="${not #lists.isEmpty(listOfNotes) && risk == 'Early onset'}" class = "alert alert-dark" role="alert" style="display: inline-block">
