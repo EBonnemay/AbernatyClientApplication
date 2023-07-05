@@ -21,10 +21,10 @@ public interface MicroservicePatientsProxy {
     PatientBean retrievePatient(@PathVariable("family") String family, @PathVariable("given") String given);
 
     @PostMapping(value = "/patient/update/{patId}")
-    public String updatePatient(@PathVariable("patId") String patId, PatientBean patient);
+    public PatientBean updatePatient(@PathVariable("patId") String patId, PatientBean patient);
 
     @PostMapping(value = "/patient/add")
-    public String addPatient( PatientBean patient);
+    public PatientBean addPatient( PatientBean patient);
     @GetMapping(value = "/patient/delete/{patId}")
-    public String deletePatient(@PathVariable("patId")String patId);
+    public void deletePatient(@PathVariable("patId")String patId);
 }

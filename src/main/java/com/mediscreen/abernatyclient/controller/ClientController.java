@@ -167,16 +167,16 @@ public class ClientController {
         return String.format("redirect:/note/all/%s",patId);
     }
     /**update a note and return notesPage__*/
-    @PostMapping("/note/update/{id}")
+   /* @PostMapping("/note/update/{id}")
     public String updateNote(@PathVariable("id")String id, @RequestParam("noteContent") String noteContent){
         System.out.println("mathod post update "+noteContent);
 
         practitionersProxy.updateNote(id,noteContent);
         NoteBean note = practitionersProxy.findNoteById(id);
         String patId = note.getPatId();
-        System.out.println(String.format("redirect:/note/%s",patId));
+        System.out.println(String.format("redirect:/note/all/%s",patId));
         return String.format("redirect:/note/all/%s",patId);
-    }
+    }*/
     /**get risk level*/
     /*@PostMapping("/risk/calculate/{patId}")
     public String calculateRisk(@PathVariable("patId")String patId, @RequestBody PatientBean patient, Model model){
