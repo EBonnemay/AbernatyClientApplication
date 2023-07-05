@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "microservice-risk", url = "localhost:8081")
+@FeignClient(name = "microservice-risk", url = "${app.services.risk.url}")
 public interface MicroserviceRiskProxy {
 
    /* @PostMapping(value = "/risk/add/{patId}")

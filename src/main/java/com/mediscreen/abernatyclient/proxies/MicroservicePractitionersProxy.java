@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "microservice-practitioners", url = "localhost:8082")
+@FeignClient(name = "microservice-practitioners", url = "${app.services.practitioners.url}")
 public interface MicroservicePractitionersProxy {
 
     /**retrieve all notes for all patients__not used__}*/
