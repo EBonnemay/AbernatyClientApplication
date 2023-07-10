@@ -12,6 +12,13 @@
     margin-right:20%;
 
     }
+    .box {
+  display: flex;
+  justify-content: space-between;
+}
+.title{
+  margin-bottom: 5%;
+}
 
 
 
@@ -48,24 +55,31 @@
     <div class = "title">
     <h2> Medical Records of patient <span th:text="${patient.family}+' '+${patient.given}"></span> </h2>
     </div>
-    <div th:if="${#lists.isEmpty(listOfNotes)}" >
-      <span> level of risk for this patient :  unknown</span>
-    </div>
+    <div class="box">
+          <div> <span> age : <span th:text = "${age}"></span></span><span>  -  sex : <span th:text = "${patient.sex}"></span></span><span>  -  number of risk factors : <span th:text = "${riskFactorDtoBean1.numberOfTriggers}"></span></span>
+          </div>
 
-    <div th:if="${not #lists.isEmpty(listOfNotes) && risk == 'None'}" class = "alert alert-success" role="alert" style="display: inline-block">
-      <span> level of risk for this patient :  <span th:text = "${risk}"></span></span>
-    </div>
-    <div th:if="${not #lists.isEmpty(listOfNotes) && risk == 'Borderline'}" class = "alert alert-warning" role="alert" style="display: inline-block">
-      <span> level of risk for this patient :  <span  th:text = "${risk}"></span></span>
-    </div>
-    <div th:if="${not #lists.isEmpty(listOfNotes) && risk == 'In danger'}" class = "alert alert-danger" role="alert" style="display: inline-block">
-      <span> level of risk for this patient :  <span th:text = "${risk}"></span></span>
-    </div>
-    <div th:if="${not #lists.isEmpty(listOfNotes) && risk == 'Early onset'}" class = "alert alert-dark" role="alert" style="display: inline-block">
-      <span> level of risk for this patient :  <span th:text = "${risk}"></span></span>
-    </div>
+      <!--<div th:if="${not #lists.isEmpty(riskFactorDtoBean1.listOfTriggersInOnePatientsMessages)}" ><span-->
 
+          <div>
+                        <div th:if="${#lists.isEmpty(listOfNotes)}" >
+                          <span> level of risk for this patient :  unknown</span>
+                        </div>
 
+                        <div th:if="${not #lists.isEmpty(listOfNotes) && riskFactorDtoBean1.levelOfRisk == 'None'}" class = "alert alert-success" role="alert" style="display: inline-block">
+                          <span> level of risk for this patient :  <span th:text = "${riskFactorDtoBean1.levelOfRisk}"></span></span>
+                        </div>
+                        <div th:if="${not #lists.isEmpty(listOfNotes) && riskFactorDtoBean1.levelOfRisk == 'Borderline'}" class = "alert alert-warning text-right" role="alert" style="display: inline-block">
+                          <span> level of risk for this patient :  <span  th:text = "${riskFactorDtoBean1.levelOfRisk}"></span></span>
+                        </div>
+                        <div th:if="${not #lists.isEmpty(listOfNotes) && riskFactorDtoBean1.levelOfRisk == 'In danger'}" class = "alert alert-danger text-right" role="alert" style="display: inline-block">
+                          <span> level of risk for this patient :  <span th:text = "${riskFactorDtoBean1.levelOfRisk}"></span></span>
+                        </div>
+                        <div th:if="${not #lists.isEmpty(listOfNotes) && riskFactorDtoBean1.levelOfRisk == 'Early onset'}" class = "alert alert-dark text-right" role="alert" style="display: inline-block">
+                          <span> level of risk for this patient :  <span th:text = "${riskFactorDtoBean1.levelOfRisk}"></span></span>
+                        </div>
+          </div>
+    </div>
 
       <div class="row">
 

@@ -1,5 +1,6 @@
 package com.mediscreen.abernatyclient.controller;
 
+import com.google.common.annotations.Beta;
 import com.mediscreen.abernatyclient.beans.NoteBean;
 import com.mediscreen.abernatyclient.beans.PatientBean;
 import com.mediscreen.abernatyclient.beans.RiskFactorDtoBean;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +29,28 @@ public class ClientController {
         this.practitionersProxy = practitionersProxy;
         this.riskProxy = riskProxy;
     }
-    /**display list of patients on HomePage page*/
+
+
     @RequestMapping("/")
-    public String displayHomePage(Model model){
+    public String displayPatientRequestForm(){
+        return "HomePage";
+    }
+    @PostMapping("/patient")
+    public String showOnePatientsPageFromFamilyAndGiven(@RequestParam ("family")String family, @RequestParam ("given")String given){
+
+        int patId = patientsProxy.getPatIdFromFamilyAndGiven(family, given);
+       // System.out.println("in client controller post : date of birth = "+ patient.getDate_of_birth());
+        //System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
+        return String.format("redirect:/note/all/%s",patId);
+    }
+
+
+        /**display list of patients on Patients page*/
+    @GetMapping("/patient/all")
+    public String displayPatients(Model model){
         List<PatientBean> patients = patientsProxy.listOfPatients();
         model.addAttribute("patients", patients);
-        return "HomePage";
+        return "Patients";
     }
     /**display 'update' form on UpdatePatient page*/
     @GetMapping("/patient/update/{id}")
@@ -55,7 +73,7 @@ public class ClientController {
 
 
 
-    /**update a patient and return HomePage*/
+    /**update a patient and return Patients*/
    @PostMapping("/patient/update/{id}")
     public String updatePatient(@PathVariable("id") String id, @Valid @ModelAttribute ("patient") PatientBean patient, BindingResult bindingResult){
         System.out.println("this is family "+ patient.getFamily());
@@ -69,7 +87,7 @@ public class ClientController {
         //System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
         return "redirect:/" ;
     }
-    /**add a patient and return HomePage*/
+    /**add a patient and return Patients*/
     @PostMapping("/patient/add")
     public String addPatient(@Valid @ModelAttribute ("patient")PatientBean patient, BindingResult bindingResult){
         System.out.println("this is family "+ patient.getFamily());
@@ -84,7 +102,7 @@ public class ClientController {
 
         return "redirect:/";
     }
-    /**delete a patient and return HomePage*/
+    /**delete a patient and return Patients*/
    @GetMapping("/patient/delete/{id}")
     public String deletePatient(@PathVariable ("id")String id){
         System.out.println("patient to delete's id is "+ id);
@@ -99,6 +117,10 @@ public class ClientController {
         List<NoteBean> listOfOnePatientsNotes = practitionersProxy.retrieveOnePatientsNotes(patId);
 
         PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(patId));
+       LocalDate localDateOfBirth = patient.getDate_of_birth();
+       LocalDate today = LocalDate.now();
+        int age = Period.between(localDateOfBirth, today).getYears();
+
         List<String>listOfOnePatientMessages = new ArrayList<>();
 
         for (NoteBean note : listOfOnePatientsNotes) {
@@ -113,10 +135,16 @@ public class ClientController {
         //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         //String dateString = dateOfBirth.format(formatter);
        RiskFactorDtoBean riskFactorDtoBean = new RiskFactorDtoBean(patient.getSex(), patient.getDate_of_birth(), listOfOnePatientMessages);
-       String risk = riskProxy.calculateRiskFactors(riskFactorDtoBean);
+
+
+       RiskFactorDtoBean riskFactorDtoBean1 = riskProxy.calculateRiskFactors(riskFactorDtoBean);
+       System.out.println("test for riskFactorDtoBean1 is "+riskFactorDtoBean1.getSex());
+       System.out.println("test for riskFactorDtoBean1 is "+riskFactorDtoBean1.getNumberOfTriggers());
+
+        model.addAttribute("age", age);
        model.addAttribute("listOfNotes", listOfOnePatientsNotes);
         model.addAttribute("patient", patient);
-        model.addAttribute("risk", risk);
+        model.addAttribute("riskFactorDtoBean1", riskFactorDtoBean1);
 
 
 

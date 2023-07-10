@@ -13,7 +13,7 @@ public interface MicroserviceRiskProxy {
 }*/
 
     @PostMapping(value = "/risk/calculate")
-    public String calculateRiskFactors(@RequestBody RiskFactorDtoBean riskFactorDtoBean);
+    public RiskFactorDtoBean calculateRiskFactors(@RequestBody RiskFactorDtoBean riskFactorDtoBean);
     //public String calculateRiskFactors(@RequestBody RiskFactor riskFactor);
 
 }

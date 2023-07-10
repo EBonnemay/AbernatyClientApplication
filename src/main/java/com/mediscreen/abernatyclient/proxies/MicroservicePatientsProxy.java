@@ -27,4 +27,7 @@ public interface MicroservicePatientsProxy {
     public PatientBean addPatient( PatientBean patient);
     @GetMapping(value = "/patient/delete/{patId}")
     public void deletePatient(@PathVariable("patId")String patId);
+    @PostMapping("/patient")
+
+    public int getPatIdFromFamilyAndGiven(@RequestParam ("family") String family, @RequestParam("given")String given);
 }

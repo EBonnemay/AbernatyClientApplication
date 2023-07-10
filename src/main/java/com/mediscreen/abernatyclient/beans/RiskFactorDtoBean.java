@@ -8,12 +8,33 @@ public class RiskFactorDtoBean {
     private LocalDate dob;
 
     private List<String> listOfOnePatientsMessages;
+    private int numberOfTriggers;
+
+    private String levelOfRisk;
+
 
     public RiskFactorDtoBean(String sex, LocalDate dob, List<String> listOfOnePatientsMessages) {
         this.sex = sex;
         this.dob = dob;
         this.listOfOnePatientsMessages = listOfOnePatientsMessages;
     }
+
+    public int getNumberOfTriggers() {
+        return numberOfTriggers;
+    }
+
+    public void setNumberOfTriggers(int numberOfTriggers) {
+        this.numberOfTriggers = numberOfTriggers;
+    }
+
+    public String getLevelOfRisk() {
+        return levelOfRisk;
+    }
+
+    public void setLevelOfRisk(String levelOfRisk) {
+        this.levelOfRisk = levelOfRisk;
+    }
+
 
     public String getSex() {
         return sex;

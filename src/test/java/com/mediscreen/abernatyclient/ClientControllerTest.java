@@ -48,11 +48,11 @@ public class ClientControllerTest {
     }
 
     @Test
-    public void displayHomePageTest(){
+    public void displayPatientsTest(){
         List<PatientBean> patients = new ArrayList<>();
         Model model = new ConcurrentModel();
         when(patientsProxy.listOfPatients()).thenReturn(patients);
-        clientController.displayHomePage(model);
+        clientController.displayPatients(model);
         verify(patientsProxy, times(1)).listOfPatients();
         assertTrue(model.containsAttribute("patients"));
     }
@@ -124,7 +124,7 @@ public class ClientControllerTest {
         Model model = new ConcurrentModel();
         when(practitionersProxy.retrieveOnePatientsNotes("1")).thenReturn(listOfOnePatientsNotes);
         when(patientsProxy.retrievePatient(1)).thenReturn(patient);
-        when(riskProxy.calculateRiskFactors(any(RiskFactorDtoBean.class))).thenReturn(risk);
+        when(riskProxy.calculateRiskFactors(any(RiskFactorDtoBean.class))).thenReturn(riskFactorDtoBean);
 
 
 
