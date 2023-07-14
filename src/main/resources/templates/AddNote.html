@@ -56,8 +56,8 @@
       <div class="report-div">
         <form th:action="@{/note/add/{patId}(patId=${patient.patient_id})}"  method="post">
             <textarea class= centered-textarea name = "contentNote">new report ...</textarea>
-            <div th:if="${param.error}">
-                <p class="errors">Wrong data</p>
+            <div th:if="${error}">
+                <p class="errors">error in adding note</p>
             </div>
             <div >
                 <input type="submit" value="Submit" class="input-div"  />

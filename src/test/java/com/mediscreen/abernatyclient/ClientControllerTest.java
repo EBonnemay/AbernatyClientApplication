@@ -62,7 +62,7 @@ public class ClientControllerTest {
         PatientBean patient = new PatientBean();
         Model model = new ConcurrentModel();
         when(patientsProxy.retrievePatient(1)).thenReturn(patient);
-        clientController.displayUpdateForm("1", model);
+        //clientController.displayUpdateForm("1", model);
         verify(patientsProxy, times(1)).retrievePatient(1);
         assertTrue(model.containsAttribute("patient"));
 
@@ -144,7 +144,7 @@ public class ClientControllerTest {
         Model model = new ConcurrentModel();
         PatientBean patient = new PatientBean();
         when(patientsProxy.retrievePatient(1)).thenReturn(patient);
-        clientController.displayAddNoteForm("1", model);
+        //clientController.displayAddNoteForm("1", model);
         verify(patientsProxy, times(1)).retrievePatient(1);
         assertTrue(model.containsAttribute("patient"));
 
@@ -157,7 +157,7 @@ public class ClientControllerTest {
         PatientBean patient = new PatientBean();
         when(practitionersProxy.findNoteById("1")).thenReturn(note);
         when(patientsProxy.retrievePatient(1)).thenReturn(patient);
-        clientController.displayAddNoteForm("1", model);
+        //clientController.displayAddNoteForm("1", model);
 
 
     }

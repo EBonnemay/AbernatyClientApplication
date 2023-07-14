@@ -46,8 +46,8 @@
         </div>
 
 
-        <div th:if="${param.error}">
-          <p class="errors">Wrong user or password</p>
+        <div th:if="${error}">
+          <p class="errors">error while updating patient</p>
         </div>
         <div class="row pt-2">
           <input type="submit" value="Submit" style="width: 200px; height: 40px; margin: 2px;" />

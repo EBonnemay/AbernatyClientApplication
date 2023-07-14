@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -30,18 +31,32 @@ public class ClientController {
         this.riskProxy = riskProxy;
     }
 
-
+/**display HomePage/'get patient' form, including redirection case*/
     @RequestMapping("/")
-    public String displayPatientRequestForm(){
+    public String displayPatientRequestForm(@RequestParam (name = "error", required = false)String error, Model model){
+
+        if (error != null) {
+            model.addAttribute("error", true);
+        }
         return "HomePage";
     }
+    /**post method to get patient file, handling success or fail*/
     @PostMapping("/patient")
     public String showOnePatientsPageFromFamilyAndGiven(@RequestParam ("family")String family, @RequestParam ("given")String given){
+        int patId;
+        try {
+            patId = patientsProxy.getPatIdFromFamilyAndGiven(family, given);
+           // model.addAttribute("error", false);
 
-        int patId = patientsProxy.getPatIdFromFamilyAndGiven(family, given);
+        }
+        catch(Exception e){
+            //model.addAttribute("error");
+            return "redirect:/?error=true";
+        }
+        return String.format("redirect:/note/all/%s",patId);
        // System.out.println("in client controller post : date of birth = "+ patient.getDate_of_birth());
         //System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
-        return String.format("redirect:/note/all/%s",patId);
+
     }
 
 
@@ -54,19 +69,25 @@ public class ClientController {
     }
     /**display 'update' form on UpdatePatient page*/
     @GetMapping("/patient/update/{id}")
-    public String displayUpdateForm(@PathVariable("id")String id, Model model){
+    public String displayUpdateForm(@RequestParam (name = "error", required = false)String error, @PathVariable("id")String id, Model model){
         System.out.println("id is" + id);
         PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(id));
         //model.addAttribute("family", patient.getFamily());
         //model.addAttribute("given", patient.getGiven());
         System.out.println(patient.getDate_of_birth());
+        if (error != null) {
+            model.addAttribute("error", true);
+        }
         //System.out.println(patient.getDate_of_birth() instanceof Date);
         model.addAttribute("patient", patient);
         return "UpdatePatient";
     }
     /**display the 'add patient' form on AddPatient page*/
     @GetMapping("/patient/add")
-    public String displayAddForm(){
+    public String displayAddForm(@RequestParam (name = "error", required = false)String error, Model model){
+        if (error != null) {
+            model.addAttribute("error", true);
+        }
         return "AddPatient";
     }
 
@@ -79,13 +100,19 @@ public class ClientController {
         System.out.println("this is family "+ patient.getFamily());
         //System.out.println("this is date :"+ dateOfBirth);
         //j'ai une family et une date  format 1999-12-19
-        if(bindingResult.hasErrors()){
-            return "error-page";
+
+        try {
+            patientsProxy.updatePatient(id, patient);
         }
-        patientsProxy.updatePatient(id, patient);
+        catch(Exception e){
+                //model.addAttribute("error");
+                //return String.format("redirect:/patient/update/%s",id);
+            return String.format("redirect:/patient/update/%s?error=true", id);
+
+        }
         System.out.println("in client controller post : date of birth = "+ patient.getDate_of_birth());
         //System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
-        return "redirect:/" ;
+        return String.format("/patient/all");
     }
     /**add a patient and return Patients*/
     @PostMapping("/patient/add")
@@ -95,7 +122,13 @@ public class ClientController {
         if(bindingResult.hasErrors()){
             return "error-page";
         }
-        patientsProxy.addPatient(patient);
+        try{
+            patientsProxy.addPatient(patient);
+        }catch(Exception e){
+                //model.addAttribute("error");
+                //return String.format("redirect:/patient/update/%s",id);
+                return String.format("redirect:/patient/add?error=true");
+        }
 
         System.out.println("in client controller post : date of birth = "+ patient.getDate_of_birth());
        // System.out.println("in client controller post : date instance of Date?" + (patient.getDate_of_birth() instanceof Date));
@@ -154,15 +187,18 @@ public class ClientController {
 
     /**display 'add note' form on AddNote page_calling patientsProxy, not practitioners' proxy__*/
    @GetMapping("/note/add/{id}")
-   public String displayAddNoteForm(@PathVariable("id")String id, Model model){
+   public String displayAddNoteForm(@RequestParam (name = "error", required = false)String error, @PathVariable("id")String id, Model model){
         PatientBean patient = patientsProxy.retrievePatient(Integer.parseInt(id));
+       if (error != null) {
+           model.addAttribute("error", true);
+       }
         model.addAttribute("patient", patient);
         return "AddNote";
     }
 
     /**display 'update note' form on UpdateNote page__ calling patient and pratitioners' proxy__*/
    @GetMapping("/note/update/{id}")
-    public String displayUpdateNoteForm(@PathVariable("id")String id, Model model){
+    public String displayUpdateNoteForm(@RequestParam (name = "error", required = false)String error, @PathVariable("id")String id, Model model){
        System.out.println("just entered client controller");
         NoteBean note = practitionersProxy.findNoteById(id);
         System.out.println("id in clientcontroller is "+ id);
@@ -170,6 +206,9 @@ public class ClientController {
         System.out.println("patId in client controller is "+ patId);
         int intPatId = Integer.parseInt(patId);
         PatientBean patient = patientsProxy.retrievePatient(intPatId);
+       if (error != null) {
+           model.addAttribute("error", true);
+       }
         model.addAttribute("note", note);
         model.addAttribute("patient", patient);
         return "UpdateNote";
@@ -180,7 +219,11 @@ public class ClientController {
     public String addNote(@PathVariable("patId")String patId, @RequestParam String contentNote){
         System.out.println("method post add " + contentNote);//ok
         System.out.println("inside client controller - post add note");//ok
-        practitionersProxy.addNote(patId, contentNote);
+        try {
+            practitionersProxy.addNote(patId, contentNote);
+        } catch(Exception e){
+            return String.format("redirect:/note/add/%s?error=true", patId);
+            }
         return String.format("redirect:/note/all/%s",patId);
     }
     /**delete a note and return notesPage__*/
@@ -189,31 +232,7 @@ public class ClientController {
        NoteBean note = practitionersProxy.findNoteById(id);
        String patId = note.getPatId();
        practitionersProxy.deleteNote(id);
-
-
        System.out.println("voilà patId "+ patId);
         return String.format("redirect:/note/all/%s",patId);
     }
-    /**update a note and return notesPage__*/
-   /* @PostMapping("/note/update/{id}")
-    public String updateNote(@PathVariable("id")String id, @RequestParam("noteContent") String noteContent){
-        System.out.println("mathod post update "+noteContent);
-
-        practitionersProxy.updateNote(id,noteContent);
-        NoteBean note = practitionersProxy.findNoteById(id);
-        String patId = note.getPatId();
-        System.out.println(String.format("redirect:/note/all/%s",patId));
-        return String.format("redirect:/note/all/%s",patId);
-    }*/
-    /**get risk level*/
-    /*@PostMapping("/risk/calculate/{patId}")
-    public String calculateRisk(@PathVariable("patId")String patId, @RequestBody PatientBean patient, Model model){
-        int age = riskProxy.getAge(patient.getDate_of_birth());
-        String sex = patient.getSex();
-        List<String>riskFactors = riskProxy.getListOfRiskFactors(String patId);
-        RiskBean risk = riskProxy.calculateRisk(age, sex, riskFactors);
-        model.addAttribute("risk", risk);
-        return String.format("redirect:/note/all/%", patId);
-    }*/
-
 }

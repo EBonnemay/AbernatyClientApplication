@@ -20,8 +20,10 @@
 <header></header>
 <main>
   <div class="container d-flex justify-content-center bg-light border border-dark py-4">
+
     <div>
-      <div class="row py-2 bg-secondary text-white d-flex justify-content-center ">Select Patient</div>
+      <div class="py-4"><h1>Diabete diagnoses</h1></div>
+      <div class=" row py-2 alert alert-secondary text-right d-flex justify-content-center ">Select Patient</div>
       <form th:action="@{/patient}"  method="post">
         <div class="row py-4">
           <input type="text"  id="family" name="family" autofocus="autofocus" placeholder="family" style="width: 200px; height: 40px; margin: 2px;"/> <br />
@@ -31,10 +33,11 @@
         </div>
 
 
-        <div th:if="${param.error}">
+        <!--<div th:if="${param.error}">-->
+          <div th:if="${error}">
           <p class="errors">Wrong user or password</p>
         </div>
-        <div class="row pt-2">
+        <div class="row py-4">
           <input type="submit" value="Submit" style="width: 200px; height: 40px; margin: 2px;" />
         </div >
 
@@ -43,11 +46,12 @@
       </form>
 
     </div>
-    <a th:href="@{/patient/all}" method = "get" class="btn btn-outline-info">view all patients</a>
+
 
   </div>
 
   </div>
+  <div class="container d-flex justify-content-center bg-light border border-dark py-4"><a th:href="@{/patient/all}" method = "get" class="btn btn-outline-info">view all patients</a></div>
 
 </main>
 <footer></footer>
